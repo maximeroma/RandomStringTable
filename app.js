@@ -57,8 +57,9 @@ $(document).ready(function(){
 		};
 		for(var m = 0; m < table.length; m++){
 			$('tbody').append("<tr><td scope='row'><input name='row' type='radio' value='"+ j++ +"'/></td></tr>");
+			var a = 0;
 			for(var w = 0; w < table[m].length; w++){
-				$('tr').last().append("<td>" + table[m][w] + "</td>");
+				$('tr').last().append("<td value='"+ a++ +"'>" + table[m][w] + "</td>");
 			};			
 		};			
 		return table;		
@@ -81,9 +82,11 @@ $(document).ready(function(){
 			}
 		}); 
 		$('table').delegate('td', 'click', function(){
-			$(this).attr('id', 'cellChecked');
-			$("#cellChecked").parent().find('input').prop('checked');
-			$(this).removeAttr('id');
+			var index = $(this).attr('value');
+			$(this).parent().find('input').prop('checked', 'checked');			
+			$('thead th').eq(index).find('input').prop('checked', 'checked');
+			$('#textArea').html($(this).val());
+			
 
 		})
 		
