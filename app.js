@@ -2,81 +2,92 @@ $(document).ready(function(){
 
 
 	
-	var randomString = function(a){
+	function randomString(nChar){
 		var newString =[];
 		var alphabet = "azertyuiopqsdfghjklmwxcvbn1234567890";		
-		for(a; a > 0; a-- ){
+		for(nChar; nChar > 0; nChar-- ){
 			var letter = alphabet[Math.floor(Math.random()* alphabet.length)];
 			newString.push(letter);		
 		}
 		newString = newString.join("");
-		//console.log(newString);
 		return newString;
 	};
-	randomString(300);
-	//console.log(newString);
+	
+	
 
 	
-	var createRandomTitle = function(row, col, nChar){
+	
+
+
+
+
+
+
+
+
+	function createRandomTitle(row, col, nChar){
 		var arrayToArray = [];	
 		for(var k = 0; k < row; k++){
 			arrayToArray.push([]);
 			for(var l = 0; l < col; l++){
-				var string = randomString(nChar);
-				arrayToArray[k].push(string);
+				arrayToArray[k].push(randomString(nChar));
 			}
 		}		
-		console.log(arrayToArray);
 		return arrayToArray;
-		
-
 	};
 
-	createRandomTitle(5, 5, 5);
+	
 	
 
-var createRandomTable = function(row, col, nChar){
-	var table = createRandomTitle(row, col, nChar);
-	for(var x = 0; x < table[0].length; x++ ){
-		console.log(table[0].length);
-		$('thead tr').append("<th scope='col'><input type='radio' /></th>");
-	};
-	for(var m = 0; m < table.length; m++){
-		$('tbody').append("<tr><td scope='row'><input type='radio'/></td></tr>");
-		for(var w = 0; w < table[m].length; w++){
-			$('tr').last().append("<td>" + table[m][w] + "</td>");
+	
+
+
+
+
+
+
+
+
+	function createRandomTable(row, col, nChar){
+		var table = createRandomTitle(row, col, nChar);
+		var i = 0;
+		var j = 0;
+		for(var x = 0; x < table[0].length; x++ ){
+			$('thead tr').append("<th scope='col'><input name='col' type='radio' value='"+ i++ +"'/></th>");			
 		};
+		for(var m = 0; m < table.length; m++){
+			$('tbody').append("<tr><td scope='row'><input name='row' type='radio' value='"+ j++ +"'/></td></tr>");
+			for(var w = 0; w < table[m].length; w++){
+				$('tr').last().append("<td>" + table[m][w] + "</td>");
+			};			
+		};			
+		return table;		
+	};	
+
 	
-	};
-	return false;
-};
-
-createRandomTable(5, 5, 5);
-
-var targetByOrigin = function(){
-
-}
 
 
 
 
 
 
-
-/*
-	var createRandomTable = function(){
-		$('tbody').append("<tr></tr>");
-		for(var j = 1; j < newString.length; j++){
-			$('tr').last().append("<td>" + newString[j-1] + "</td>");
-			if (j % 6 === 0){
-				$('tbody').append("<tr></tr>");
+	function targetRadioButton(row,col, nChar){
+		var table = createRandomTable(row, col, nChar);
+		$('table').delegate('input', 'click', function(){
+			var xOrigin = $('input[name=col]:checked').val();
+			var yOrigin = $('input[name=row]:checked').val();
+			if(xOrigin != undefined && yOrigin != undefined){
+				$('#textArea').val(table[yOrigin][xOrigin])
 			}
-		}
+		}); 
+		$('table').delegate('td', 'click', function(){
+			$(this).attr('id', 'cellChecked');
+			$("#cellChecked").parent().find('input').prop('checked');
+			$(this).removeAttr('id');
+
+		})
+		
 	};
-	createRandomTable();
-
-*/
-
-
+	targetRadioButton(10, 10, 10);
 });
 
